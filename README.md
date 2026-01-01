@@ -14,9 +14,6 @@
 
 The system features an **Explainable AI (XAI)** layer using Grad-CAM, which highlights *where* the manipulation was detected, making it suitable for forensic auditing rather than just black-box prediction.
 
-### Live Demo
-The model is deployed and running on Hugging Face Spaces.
-**[Click here to try the Live Demo](https://huggingface.co/spaces/ellojerahmeel/Sentinel-Deepfake-Detector)**
 
 ---
 
