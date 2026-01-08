@@ -14,27 +14,29 @@ class DeepfakeDataset(Dataset):
         # Construct the full path (e.g., ./data/processed/train)
         self.split_dir = os.path.join(root_dir, split)
         
-        # DEBUG CHECK: Does the folder exist?
+        # Check that the folder exists
         if not os.path.exists(self.split_dir):
-            raise FileNotFoundError(f"❌ CRITICAL ERROR: The folder '{self.split_dir}' does not exist.\nDid you run preprocess.py? Is your folder named 'processed' or something else?")
+            raise FileNotFoundError(
+                f"CRITICAL ERROR: The folder '{self.split_dir}' does not exist. "
+                "Did you run preprocess.py? Is your folder named 'processed' or something else?"
+            )
 
-        # 1. Gather all file paths
-        # We assume structure: data/processed/train/real and data/processed/train/fake
+        # Gather all file paths (expects: data/processed/{split}/real and .../fake)
         real_folder = os.path.join(self.split_dir, "real")
         fake_folder = os.path.join(self.split_dir, "fake")
 
         self.real_paths = self._get_files(real_folder)
         self.fake_paths = self._get_files(fake_folder)
         
-        # 2. Create labels (0 = Real, 1 = Fake)
+        # Create labels (0 = real, 1 = fake)
         self.all_paths = self.real_paths + self.fake_paths
         self.labels = [0] * len(self.real_paths) + [1] * len(self.fake_paths)
 
-        # DEBUG CHECK: Did we find any images?
+        # Warn if no images were found
         if len(self.all_paths) == 0:
-             print(f"⚠️ WARNING: No images found in {self.split_dir}. Check your folders!")
+            print(f"WARNING: No images found in {self.split_dir}. Check your folders!")
 
-        # 3. Define Augmentations
+        # Define augmentations
         if split == "train":
             self.transform = A.Compose([
                 A.Resize(224, 224),
@@ -68,7 +70,7 @@ class DeepfakeDataset(Dataset):
         
         image = cv2.imread(path)
         if image is None:
-            raise ValueError(f"❌ Error: Could not read image at {path}")
+            raise ValueError(f"Error: Could not read image at {path}")
 
         image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
         
@@ -77,29 +79,27 @@ class DeepfakeDataset(Dataset):
         
         return image_tensor, torch.tensor(label, dtype=torch.float32)
 
-# --- TEST BLOCK (MUST BE UNINDENTED - TOUCHING THE LEFT SIDE) ---
+# Test block (must be unindented)
 if __name__ == "__main__":
-    print("🔍 Testing Dataset Loading...")
-    
-    # POINT THIS TO YOUR EXACT 'data/processed' FOLDER
-    # Based on your folder structure, it should be relative to where you run the command
-    dataset_root = "./data/processed" 
+    print("Testing Dataset Loading...")
+
+    # Path to the 'data/processed' folder
+    dataset_root = "./data/processed"
     
     try:
-        # Try loading the 'train' split
         dataset = DeepfakeDataset(root_dir=dataset_root, split="train")
         
-        print(f"✅ SUCCESS: Dataset Loaded!")
-        print(f"📂 Found {len(dataset)} total images.")
-        print(f"   - Real images: {len(dataset.real_paths)}")
-        print(f"   - Fake images: {len(dataset.fake_paths)}")
+        print("SUCCESS: Dataset Loaded!")
+        print(f"Found {len(dataset)} total images.")
+        print(f"  - Real images: {len(dataset.real_paths)}")
+        print(f"  - Fake images: {len(dataset.fake_paths)}")
         
         if len(dataset) > 0:
             img, label = dataset[0]
-            print(f"🖼️ Sample Image Shape: {img.shape}")
-            print(f"🏷️ Sample Label: {label}")
+            print(f"Sample image tensor shape: {img.shape}")
+            print(f"Sample label: {label}")
         else:
-            print("❌ ERROR: Dataset is empty. Check data/processed/train/real folder.")
+            print("ERROR: Dataset is empty. Check data/processed/train/real folder.")
             
     except Exception as e:
-        print(f"\n❌ CRASHED: {e}")
+        print(f"CRASHED: {e}")

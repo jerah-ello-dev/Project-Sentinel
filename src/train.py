@@ -5,7 +5,7 @@ from torch.utils.data import DataLoader
 from tqdm import tqdm
 import os
 
-# --- IMPORT YOUR MODULES ---
+# IMPORT YOUR MODULES
 from dataset import DeepfakeDataset
 from model import SentinelModel
 
@@ -23,7 +23,7 @@ def train_one_epoch(model, loader, criterion, optimizer, device):
     total = 0
     
     # Progress Bar
-    loop = tqdm(loader, desc="🚂 Training", leave=False)
+    loop = tqdm(loader, desc="Training", leave=False)
     
     for images, labels in loop:
         images, labels = images.to(device), labels.to(device)
@@ -72,25 +72,25 @@ def validate(model, loader, criterion, device):
     accuracy = 100 * correct / total
     return avg_loss, accuracy
 
-# --- MAIN EXECUTION ---
+# MAIN EXECUTION
 if __name__ == "__main__":
     # 0. Setup
     os.makedirs(SAVE_PATH, exist_ok=True)
-    print(f"🚀 Device selected: {DEVICE}")
+    print(f"Device selected: {DEVICE}")
     if DEVICE == 'cpu':
-        print("⚠️ WARNING: Training on CPU will be slow. Use a GPU if possible!")
+        print("WARNING: Training on CPU will be slow. Use a GPU if possible!")
 
     # 1. Load Data
-    print("📂 Loading Datasets...")
+    print("Loading Datasets...")
     train_ds = DeepfakeDataset(root_dir="./data/processed", split="train")
     val_ds = DeepfakeDataset(root_dir="./data/processed", split="val")
     
     train_loader = DataLoader(train_ds, batch_size=BATCH_SIZE, shuffle=True, num_workers=0)
     val_loader = DataLoader(val_ds, batch_size=BATCH_SIZE, shuffle=False, num_workers=0)
-    print(f"✅ Data Loaded. Train: {len(train_ds)}, Val: {len(val_ds)}")
+    print(f"Data Loaded. Train: {len(train_ds)}, Val: {len(val_ds)}")
 
     # 2. Load Model
-    print("🧠 Initializing Model...")
+    print("Initializing Model...")
     model = SentinelModel().to(DEVICE)
     
     # 3. Setup Optimizer & Loss
@@ -100,7 +100,7 @@ if __name__ == "__main__":
     # 4. Training Loop
     best_acc = 0.0
     
-    print(f"\n🔥 STARTING TRAINING FOR {EPOCHS} EPOCHS\n")
+    print(f"\nSTARTING TRAINING FOR {EPOCHS} EPOCHS\n")
     
     for epoch in range(EPOCHS):
         print(f"--- Epoch {epoch+1}/{EPOCHS} ---")
@@ -111,13 +111,13 @@ if __name__ == "__main__":
         # Validate
         val_loss, val_acc = validate(model, val_loader, criterion, DEVICE)
         
-        print(f"   📉 Train Loss: {train_loss:.4f} | Acc: {train_acc:.2f}%")
-        print(f"   🧪 Val Loss:   {val_loss:.4f} | Acc: {val_acc:.2f}%")
+        print(f"   Train Loss: {train_loss:.4f} | Acc: {train_acc:.2f}%")
+        print(f"   Val Loss:   {val_loss:.4f} | Acc: {val_acc:.2f}%")
         
         # Save Best Model
         if val_acc > best_acc:
             best_acc = val_acc
             torch.save(model.state_dict(), os.path.join(SAVE_PATH, "best_model.pth"))
-            print(f"   💾 New Best Model Saved! ({best_acc:.2f}%)")
+            print(f"   New Best Model Saved! ({best_acc:.2f}%)")
             
-    print("\n🏁 TRAINING COMPLETE!")
+    print("\nTRAINING COMPLETE!")
