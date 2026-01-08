@@ -1,0 +1,20 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual Environments
+venv/
+env/
+.env
+
+# Datasets (Do not upload large raw data)
+data/
+
+# OS generated files
+.DS_Store
+Thumbs.db
+
+# Large Model Files
+# ONLY uncomment the line below if best_model.pth is LARGER than 100MB
+# *.pth

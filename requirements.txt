@@ -1,7 +1,8 @@
 torch
 torchvision
+timm
 opencv-python
 albumentations
 mediapipe
-numpy
-gradio
+split-folders
+tqdm
