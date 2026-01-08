@@ -12,13 +12,13 @@ from model import SentinelModel
 from model_rnn import TemporalSentinel
 from gradcam import GradCAM, overlay_heatmap
 
-# --- CONFIGURATION ---
+# CONFIGURATION
 TEMPORAL_PATH = "./checkpoints/best_temporal_model.pth"
 SPATIAL_PATH = "./checkpoints/best_model.pth"
 DEVICE = "cuda" if torch.cuda.is_available() else "cpu"
 SEQUENCE_LENGTH = 10
 
-# --- SETUP MODELS ---
+# SETUP MODELS
 def load_models():
     # Load Spatial (For Images & Explanation)
     spatial = SentinelModel().to(DEVICE)
@@ -36,12 +36,12 @@ def load_models():
     return spatial, temporal
 
 def analyze_image(path, spatial_model):
-    print(f"🖼️  Analyzing IMAGE: {path}")
+    print(f"Analyzing IMAGE: {path}")
     
     # 1. Load & Detect Face
     img = cv2.imread(path)
     if img is None:
-        print("❌ Error: Could not read image.")
+        print("Error: Could not read image.")
         return
 
     mp_face = mp.solutions.face_detection.FaceDetection(model_selection=1, min_detection_confidence=0.5)
@@ -49,7 +49,7 @@ def analyze_image(path, spatial_model):
     results = mp_face.process(img_rgb)
     
     if not results.detections:
-        print("⚠️ No face detected in image.")
+        print("No face detected in image.")
         return
 
     # 2. Crop Face
@@ -68,12 +68,12 @@ def analyze_image(path, spatial_model):
         score = spatial_model(aug).item()
         
     print("="*40)
-    print(f"📊 SUSPICION SCORE: {score*100:.2f}%")
+    print(f"SUSPICION SCORE: {score*100:.2f}%")
     
     # 4. The Verdict & Explanation
     if score > 0.50:
-        print("🚨 VERDICT: AI-GENERATED IMAGE DETECTED") # <--- ADDED VERDICT
-        print("📸 Generating Evidence Heatmap...")
+        print("VERDICT: AI-GENERATED IMAGE DETECTED")
+        print("Generating Evidence Heatmap...")
         
         target_layer = spatial_model.backbone.conv_head
         cam = GradCAM(model=spatial_model, target_layer=target_layer)
@@ -83,12 +83,12 @@ def analyze_image(path, spatial_model):
         result_img = overlay_heatmap(heatmap, face_crop)
         
         cv2.imwrite("evidence_image.jpg", cv2.cvtColor(result_img, cv2.COLOR_RGB2BGR))
-        print(f"✅ Evidence saved to: evidence_image.jpg")
+        print(f"Evidence saved to: evidence_image.jpg")
     else:
-        print("✅ VERDICT: REAL IMAGE") # <--- ADDED VERDICT
+        print("VERDICT: REAL IMAGE")
 
 def analyze_video(path, spatial_model, temporal_model):
-    print(f"🎥 Analyzing VIDEO: {path}")
+    print(f"Analyzing VIDEO: {path}")
     
     cap = cv2.VideoCapture(path)
     mp_face = mp.solutions.face_detection.FaceDetection(model_selection=1, min_detection_confidence=0.5)
@@ -132,7 +132,7 @@ def analyze_video(path, spatial_model, temporal_model):
     print(f"PEAK VIDEO SUSPICION: {highest_score*100:.2f}%")
     
     if highest_score > 0.50:
-        print("VERDICT: DEEPFAKE VIDEO DETECTED") # <--- ADDED VERDICT
+        print("VERDICT: DEEPFAKE VIDEO DETECTED")
         if worst_frame_face is not None:
             print("Generating Evidence Heatmap...")
             target_layer = spatial_model.backbone.conv_head
@@ -146,9 +146,9 @@ def analyze_video(path, spatial_model, temporal_model):
             cv2.imwrite("evidence_video.jpg", cv2.cvtColor(result_img, cv2.COLOR_RGB2BGR))
             print(f"Evidence saved to: evidence_video.jpg")
     else:
-        print("VERDICT: REAL VIDEO") # <--- ADDED VERDICT
+        print("VERDICT: REAL VIDEO")
 
-# --- MAIN ROUTER ---
+# MAIN ROUTER
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("--file", type=str, required=True, help="Path to image or video")
