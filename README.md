@@ -148,11 +148,11 @@ python src/inference_universal.py
 
 **Future Roadmap:**
 
-* 
+ 
 **Dataset Localization:** Retraining on a localized dataset featuring Filipino subjects to mitigate racial bias.
 
 
-* 
+ 
 **Adversarial Training:** Hardening the model against anti-forensic attacks (e.g., noise injection, blurring).
 
 
