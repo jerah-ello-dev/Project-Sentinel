@@ -136,12 +136,12 @@ python src/inference_universal.py
 
 **Current Limitations:**
 
-* 
+ 
 **Demographic Bias:** The primary training datasets are skewed towards Caucasian subjects, which may impact accuracy on under-represented groups.
 
 
 * **Lighting Sensitivity:** Performance may degrade in low-light or over-exposed environments.
-* 
+
 **Hardware Latency:** Real-time XAI generation is computationally expensive on non-GPU devices.
 
 
