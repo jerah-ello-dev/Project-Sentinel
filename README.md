@@ -5,9 +5,9 @@
 ![License](https://img.shields.io/badge/License-Academic-green)
 ![Status](https://img.shields.io/badge/Status-Capstone%20Project-success)
 
-[cite_start]**Project Sentinel** is an automated deepfake detection and forensic analysis system developed as a Capstone Project at the **Asian Institute of Management**[cite: 181, 183].
+**Project Sentinel** is an automated deepfake detection and forensic analysis system developed as a Capstone Project at the **Asian Institute of Management**[cite: 181, 183].
 
-[cite_start]In an era where the "Liar's Dividend" allows authentic media to be dismissed as fake, Sentinel provides a robust, evidence-based solution[cite: 189]. [cite_start]Unlike traditional "black box" detectors, this system employs a **Hybrid Sequential Architecture (CNN + LSTM)** to analyze temporal inconsistencies and integrates **Explainable AI (Grad-CAM)** to provide visual forensic proof of manipulation[cite: 191, 192].
+In an era where the "Liar's Dividend" allows authentic media to be dismissed as fake, Sentinel provides a robust, evidence-based solution[cite: 189]. Unlike traditional "black box" detectors, this system employs a **Hybrid Sequential Architecture (CNN + LSTM)** to analyze temporal inconsistencies and integrates **Explainable AI (Grad-CAM)** to provide visual forensic proof of manipulation[cite: 191, 192].
 
 ---
 
@@ -24,16 +24,16 @@
 
 ## Key Features
 
-* [cite_start]**Sequential Analysis:** Utilizes an LSTM network to detect motion-based anomalies (e.g., unnatural blinking, lip-sync jitters) that single-frame detectors miss[cite: 232].
-* [cite_start]**Forensic Explainability:** Integrated **Grad-CAM** generates heatmaps to visualize exactly *where* manipulation was detected, transforming the output from a simple score to auditable evidence[cite: 242, 244].
+* **Sequential Analysis:** Utilizes an LSTM network to detect motion-based anomalies (e.g., unnatural blinking, lip-sync jitters) that single-frame detectors miss[cite: 232].
+* **Forensic Explainability:** Integrated **Grad-CAM** generates heatmaps to visualize exactly *where* manipulation was detected, transforming the output from a simple score to auditable evidence[cite: 242, 244].
 * **Universal Inference:** A streamlined pipeline (`inference_universal.py`) capable of processing both static images and video streams.
-* [cite_start]**Robust Preprocessing:** Includes face gating via Google MediaPipe and standard ImageNet normalization to ensure high-quality input[cite: 259, 268].
+* **Robust Preprocessing:** Includes face gating via Google MediaPipe and standard ImageNet normalization to ensure high-quality input[cite: 259, 268].
 
 ---
 
 ## Technical Architecture
 
-[cite_start]The system is built on a two-stream hybrid architecture[cite: 276, 279]:
+The system is built on a two-stream hybrid architecture[cite: 276, 279]:
 
 1.  **Spatial "Eye" (CNN Backbone):**
     * **Model:** EfficientNet-B0 (Pre-trained on ImageNet).
@@ -41,13 +41,13 @@
 
 2.  **Temporal "Brain" (RNN/LSTM):**
     * **Model:** Long Short-Term Memory (LSTM) Network.
-    * [cite_start]**Role:** Analyzes a sliding window of 10 consecutive feature vectors to identify temporal glitches and inconsistencies across time[cite: 265, 279].
+    * **Role:** Analyzes a sliding window of 10 consecutive feature vectors to identify temporal glitches and inconsistencies across time[cite: 265, 279].
 
 ---
 
 ## Performance
 
-[cite_start]The models were rigorously evaluated on a diverse dataset combination of **FaceForensics++**, **Celeb-DF v2**, and **Tiny GenImage**[cite: 250, 252, 254].
+The models were rigorously evaluated on a diverse dataset combination of **FaceForensics++**, **Celeb-DF v2**, and **Tiny GenImage**[cite: 250, 252, 254].
 
 | Metric | Spatial Model (CNN Only) | Temporal Model (CNN + LSTM) |
 | :--- | :--- | :--- |
@@ -55,7 +55,7 @@
 | **Validation Loss** | 0.1356 | **0.0027** |
 | **Inference Focus** | Texture & Blending Artifacts | Motion & Temporal Consistency |
 
-[cite_start]*Data Source: Project Sentinel Capstone Report[cite: 297].*
+*Data Source: Project Sentinel Capstone Report[cite: 297].*
 
 ---
 
